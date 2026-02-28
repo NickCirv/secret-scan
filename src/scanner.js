@@ -119,6 +119,10 @@ function scanContent(content, filePath, patterns, options = {}) {
 }
 
 export async function scanDirectory(dirPath, options = {}) {
+  const s = await stat(dirPath);
+  if (s.isFile()) {
+    return scanFiles([dirPath], options);
+  }
   const files = await collectFiles(dirPath);
   return scanFiles(files, options);
 }
@@ -198,13 +202,37 @@ function getLineNumber(content, index) {
 
 function isPlaceholder(value) {
   if (!value) return true;
-  const lower = value.toLowerCase();
-  const placeholders = [
-    'your', 'example', 'placeholder', 'changeme', 'replace',
-    'xxxxxxxx', 'test', 'demo', 'fake', 'dummy', 'sample',
-    'xxxx', '1234', 'abcd', 'secret', 'password', 'token',
+  if (value.length < 8) return true;
+
+  const lower = value.toLowerCase().trim();
+
+  // Exact match or near-exact placeholder values
+  const exactPlaceholders = [
+    'your_key_here', 'your_secret_here', 'your_token_here',
+    'changeme', 'change_me', 'replace_me', 'fixme',
+    'placeholder', 'xxxxxxxx', 'xxxxxxxxxxxx',
+    'test1234', 'demo1234', 'fake1234', 'dummy1234',
+    'sample_key', 'example_key', 'insert_key_here',
   ];
-  return placeholders.some((p) => lower.includes(p)) || value.length < 8;
+  if (exactPlaceholders.includes(lower)) return true;
+
+  // Patterns that indicate placeholder values (full-value shape, not substring)
+  const placeholderPatterns = [
+    /^x{6,}$/i,                    // xxxxxx...
+    /^0{6,}$/,                     // 000000...
+    /^your[_-]/i,                  // your_api_key, your-secret
+    /^<.*>$/,                      // <YOUR_KEY>
+    /^\{.*\}$/,                    // {INSERT_KEY}
+    /^replace[_-]/i,              // replace_with_key
+    /^todo[_:\-]/i,               // todo:add_key
+    /^fake[_-]/i,                 // fake_secret_key
+    /^dummy[_-]/i,                // dummy_api_token
+    /^sample[_-]/i,               // sample_auth_key
+    /^insert[_-]/i,               // insert_token_here
+    /^(test|demo)$/, // literal "test" or "demo" as full value
+  ];
+
+  return placeholderPatterns.some((p) => p.test(lower));
 }
 
 const SEVERITY_ORDER = { critical: 0, high: 1, medium: 2, low: 3 };
