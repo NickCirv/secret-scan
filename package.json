@@ -1,38 +1,31 @@
 {
   "name": "secret-scan",
   "version": "1.0.0",
-  "description": "Your repo has secrets. This finds them before GitHub does.",
+  "description": "Scan your entire git history for accidentally committed secrets and API keys.",
   "type": "module",
   "bin": {
-    "secret-scan": "./bin/scan.js"
-  },
-  "main": "./src/index.js",
-  "files": [
-    "bin/",
-    "src/",
-    "README.md",
-    "LICENSE"
-  ],
-  "scripts": {
-    "start": "node bin/scan.js"
-  },
-  "keywords": [
-    "security",
-    "secrets",
-    "pre-commit",
-    "git-hooks",
-    "cli",
-    "devtools",
-    "api-keys",
-    "scanner"
-  ],
-  "author": "Nicholas Ashkar",
-  "license": "MIT",
-  "dependencies": {
-    "chalk": "^5.3.0",
-    "commander": "^12.0.0"
+    "secret-scan": "./index.js",
+    "sscan": "./index.js"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=18"
+  },
+  "keywords": [
+    "developer-tools",
+    "cli",
+    "nodejs",
+    "zero-dependencies",
+    "security",
+    "secrets",
+    "git"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NickCirv/secret-scan"
+  },
+  "homepage": "https://github.com/NickCirv/secret-scan#readme",
+  "bugs": {
+    "url": "https://github.com/NickCirv/secret-scan/issues"
   }
 }
