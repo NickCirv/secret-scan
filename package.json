@@ -1,6 +1,6 @@
 {
   "name": "secret-scan",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Scan your entire git history for accidentally committed secrets and API keys.",
   "type": "module",
   "bin": {
@@ -23,9 +23,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/NickCirv/secret-scan"
-  },
-  "homepage": "https://github.com/NickCirv/secret-scan#readme",
-  "bugs": {
-    "url": "https://github.com/NickCirv/secret-scan/issues"
   }
 }
