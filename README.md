@@ -1,3 +1,5 @@
+![Banner](banner.svg)
+
 # secret-scan
 > Scan your entire git history for accidentally committed secrets. Because git rm doesn't actually help.
 
